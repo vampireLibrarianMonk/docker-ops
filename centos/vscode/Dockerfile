@@ -39,28 +39,36 @@ RUN  dbus-uuidgen > /etc/machine-id
 # Create directory structure
 
 RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
-#
+
 # Download VSCode
 RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable 
-#
+
 # Software Development Kits
 ## Java
 RUN mkdir -p ${VS_DIR}/sdk/java 
 RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz 
 RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256 https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz.sha256 
-#
+
 # SHA256 check
 RUN echo "$(cat ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256) ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz" | sha256sum --check 
-#
+
 RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
-#
+
 RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/ 
-#
+
 RUN ls -l ${VS_DIR}/VSCode-linux-x64 
-#
+
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
-#
+
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
+# Download set of plugins
+
+## Java Debugger                                                                      
+RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
+
+## Extensions
+## Java
+RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
 
 RUN useradd -m ${USER_NAME}
 
@@ -72,15 +80,6 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
 
 USER ${USER_NAME}
 
-# Download set of plugins
-#
-## Java Debugger                                                                      
-RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
-#
-## Extensions
-## Java
-RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
-#
 # Install extension
 RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
 RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
