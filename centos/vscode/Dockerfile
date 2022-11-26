@@ -48,8 +48,6 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
  chown -R ${USER_NAME}:${USER_NAME} ${VS_DIR} && \
  chmod -R 755 ${VS_DIR}
 
-USER ${USER_NAME}
-
 RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
 #
 # Download VSCode
@@ -86,6 +84,8 @@ RUN ls -l ${VS_DIR}/VSCode-linux-x64
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
 #
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
+
+USER ${USER_NAME}
 
 # Diagnostics 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
