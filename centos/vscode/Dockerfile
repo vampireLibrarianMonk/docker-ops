@@ -9,6 +9,7 @@ FROM  centos:centos7.9.2009
 
 # Create a user name
 ENV USER_NAME=vstester
+ENV VS_DIR=/home/vstester
 
 ENV VS_CODE_VERSION=1.72.2
 
