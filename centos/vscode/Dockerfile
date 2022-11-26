@@ -37,7 +37,6 @@ RUN  yum install -y dbus-x11 PackageKit-gtk3-module libcanberra-gtk2 firefox
 RUN  dbus-uuidgen > /etc/machine-id
 
 # Create directory structure
-
 RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
 
 # Download VSCode
@@ -64,11 +63,11 @@ RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 # Download set of plugins
 
 ## Java Debugger                                                                      
-RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
+RUN wget -O ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
 
 ## Extensions
 ## Java
-RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
+RUN wget -O ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
 
 RUN useradd -m ${USER_NAME}
 
