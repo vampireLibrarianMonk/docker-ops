@@ -46,7 +46,7 @@ RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstu
 
 RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
-RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/VSCode-linux-x64
+RUN tar -xvf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/VSCode-linux-x64
 
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
@@ -57,4 +57,4 @@ RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
 #ENTRYPOINT ["./VSCode-linux-x64/bin/code", "--no-sandbox", "--user-data-dir", "/home/vstester" ]
 #CMD ./VSCode-linux-x64/bin/code --verbose --no-sandbox --user-data-dir /home/vstester
-CMD ./VSCode-linux-x64/bin/code
+CMD ./${VS_DIR}/VSCode-linux-x64/bin/code
