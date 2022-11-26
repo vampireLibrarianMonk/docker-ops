@@ -1,6 +1,9 @@
 # Use the following run command to get this thing working!
 # docker run -d --net=host --name gui_test --privileged --env DISPLAY=$DISPLAY -v "${HOME}/Xauthority:/root/.Xauthority:rw" -v /tmp/.X11-unix:/tmp/.X11-unix centos_gui:latest
 
+# While keeping the container running:
+# docker exec -it gui_test ./home/vstester/VSCode-linux-x64/bin/code
+
 # Original template based off of
 # https://linuxize.com/post/how-to-install-visual-studio-code-on-centos-7/
 
