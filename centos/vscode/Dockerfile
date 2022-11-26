@@ -15,6 +15,9 @@ ENV USER_NAME=vstester
 ENV VS_DIR=/home/${USER_NAME}
 
 ENV VS_CODE_VERSION=1.72.2
+ENV DEBUGGER_JAVA=0.46.2022111614
+ENV EXTENSION_JAVA=0.25.2022092912
+ENV OPENJDK_VERSION=11+28
 
 # Fixed immediate close of window upon boot with: https://github.com/WhitewaterFoundry/Pengwin/issues/285
 ENV LIBGL_ALWAYS_INDIRECT=1
@@ -43,17 +46,44 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
 
 USER ${USER_NAME}
 
-RUN mkdir -p ${VS_DIR}/VSCode-linux-x64
+RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 && \
 
-RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable
+# Download VSCode
+RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable && \
 
-RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
+# Create plugins directory structure
+RUN mkdir -p ${VS_DIR}/plugins && \
 
-RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/
+# Download set of plugins
+RUN mkdir -p ${VS_DIR}/plugins/java && \
 
-RUN ls -l ${VS_DIR}/VSCode-linux-x64
+## Java Debugger
+RUN wget -q -O ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage && \
 
-RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
+# Create extensions directory structure
+RUN mkdir -p ${VS_DIR}/extensions && \
+
+## Extensions
+## Java
+RUN mkdir -p ${VS_DIR}/extensions/java && \
+RUN wget -q -O ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage && \
+
+# Software Development Kits
+## Java
+RUN mkdir -p ${VS_DIR}/sdk/java && \
+RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz && \
+RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256 https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz.sha256 && \
+
+# SHA256 check
+RUN echo "$(cat ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256) ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz" | sha256sum --check && \
+
+RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz && \
+
+RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/ && \
+
+RUN ls -l ${VS_DIR}/VSCode-linux-x64 && \
+
+RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz && \
 
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
