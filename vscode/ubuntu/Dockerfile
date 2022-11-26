@@ -21,8 +21,7 @@ RUN apt-get install libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2
 
 #USER ${USER_NAME}
 
-#WORKDIR ${VS_DIR}
-WORKDIR /
+WORKDIR ${VS_DIR}
 
 RUN wget -q -O ${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable
 
