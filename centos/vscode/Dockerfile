@@ -36,17 +36,9 @@ RUN  yum install -y dbus-x11 PackageKit-gtk3-module libcanberra-gtk2 firefox
 # Generating a universally unique ID for the Container
 RUN  dbus-uuidgen > /etc/machine-id
 
-RUN useradd -m ${USER_NAME}
-
 # Create directory structure
 RUN mkdir -p ${VS_DIR}/plugins/java 
 RUN mkdir -p ${VS_DIR}/extensions/java 
-
-RUN groupadd -r ${USER_NAME} -f -g 1001 && \
- useradd -u 1001 -r -g ${USER_NAME} -m -d ${VS_DIR} -s /sbin/nologin \
- -c "VS Tester" nexus && \
- chown -R ${USER_NAME}:${USER_NAME} ${VS_DIR} && \
- chmod -R 755 ${VS_DIR}
 
 RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
 #
@@ -84,6 +76,14 @@ RUN ls -l ${VS_DIR}/VSCode-linux-x64
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
 #
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
+
+RUN useradd -m ${USER_NAME}
+
+RUN groupadd -r ${USER_NAME} -f -g 1001 && \
+ useradd -u 1001 -r -g ${USER_NAME} -m -d ${VS_DIR} -s /sbin/nologin \
+ -c "VS Tester" nexus && \
+ chown -R ${USER_NAME}:${USER_NAME} ${VS_DIR} && \
+ chmod -R 755 ${VS_DIR}
 
 USER ${USER_NAME}
 
