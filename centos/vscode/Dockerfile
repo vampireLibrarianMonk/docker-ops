@@ -15,8 +15,6 @@ ENV USER_NAME=vstester
 ENV VS_DIR=/home/${USER_NAME}
 
 ENV VS_CODE_VERSION=1.72.2
-ENV DEBUGGER_JAVA=0.46.2022112102
-ENV EXTENSION_JAVA=0.25.2022110400
 ENV OPENJDK_VERSION=11+28
 
 # Fixed immediate close of window upon boot with: https://github.com/WhitewaterFoundry/Pengwin/issues/285
@@ -34,7 +32,7 @@ RUN  localedef --no-archive -i en_US -f UTF-8 en_US.UTF-8 && \
 RUN  yum install -y dbus-x11 PackageKit-gtk3-module libcanberra-gtk2 firefox
 
 # Generating a universally unique ID for the Container
-RUN  dbus-uuidgen > /etc/machine-id
+RUN dbus-uuidgen > /etc/machine-id
 
 # Create directory structure
 RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
@@ -55,19 +53,10 @@ RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
 RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/ 
 
-RUN ls -l ${VS_DIR}/VSCode-linux-x64 
-
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
 
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 # Download set of plugins
-
-## Java Debugger                                                                      
-RUN wget -O ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
-
-## Extensions
-## Java
-RUN wget -O ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
 
 RUN useradd -m ${USER_NAME}
 
@@ -78,10 +67,6 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
  chmod -R 755 ${VS_DIR}
 
 USER ${USER_NAME}
-
-# Install extension
-RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
-RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
 
 # Diagnostics 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
