@@ -49,7 +49,7 @@ USER ${USER_NAME}
 RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
 #
 # Download VSCode
-&& wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable 
+RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable 
 #
 # Create plugins directory structure
 RUN mkdir -p ${VS_DIR}/plugins 
