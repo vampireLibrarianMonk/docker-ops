@@ -20,8 +20,8 @@ ENV EXTENSION_JAVA=0.25.2022110400
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 
 # Fixed immediate close of window upon boot with: https://github.com/WhitewaterFoundry/Pengwin/issues/285
-ENV LIBGL_ALWAYS_INDIRECT=1
-ENV NO_AT_BRIDGE=1
+#ENV LIBGL_ALWAYS_INDIRECT=1
+#ENV NO_AT_BRIDGE=1
 
 # Installing the sources for the locales
 RUN yum install -y glibc-common wget
