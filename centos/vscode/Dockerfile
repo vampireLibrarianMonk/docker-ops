@@ -24,7 +24,7 @@ ENV LIBGL_ALWAYS_INDIRECT=1
 ENV NO_AT_BRIDGE=1
 
 # Installing the sources for the locales
-RUN  yum install -y glibc-common wget
+RUN yum install -y glibc-common wget
 
 # Setting up the default locale to en_US.UTF-8
 RUN  localedef --no-archive -i en_US -f UTF-8 en_US.UTF-8 && \
@@ -37,26 +37,11 @@ RUN  yum install -y dbus-x11 PackageKit-gtk3-module libcanberra-gtk2 firefox
 RUN  dbus-uuidgen > /etc/machine-id
 
 # Create directory structure
-RUN mkdir -p ${VS_DIR}/plugins/java 
-RUN mkdir -p ${VS_DIR}/extensions/java 
 
 RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
 #
 # Download VSCode
 RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable 
-#
-# Create plugins directory structure
-#
-# Download set of plugins
-#
-## Java Debugger
-RUN wget -q -O ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
-#
-# Create extensions directory structure
-#
-## Extensions
-## Java
-RUN wget -q -O ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
 #
 # Software Development Kits
 ## Java
@@ -87,9 +72,18 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
 
 USER ${USER_NAME}
 
+# Download set of plugins
+#
+## Java Debugger                                                                      
+RUN wget -q -O vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
+#
+## Extensions
+## Java
+RUN wget -q -O vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
+#
 # Install extension
-RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
-RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
+RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
+RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
 
 # Diagnostics 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
