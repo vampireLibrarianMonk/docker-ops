@@ -36,7 +36,7 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
  useradd -u 1001 -r -g ${USER_NAME} -m -d ${VS_DIR} -s /sbin/nologin \
  -c "VS Tester" nexus && \
  chown -R ${USER_NAME}:${USER_NAME} ${VS_DIR} && \
- chmod -R 755 ${VS_DIR}
+ chmod -R 775 ${VS_DIR}
 
 USER ${USER_NAME}
 
