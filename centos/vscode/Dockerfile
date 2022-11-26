@@ -59,4 +59,4 @@ RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
 #ENTRYPOINT [ "./${VS_DIR}/VSCode-linux-x64/bin/code" ]
 #CMD ./VSCode-linux-x64/bin/code --verbose --no-sandbox --user-data-dir /home/vstester
-CMD ./VSCode-linux-x64/bin/code
+CMD ${VS_DIR}/VSCode-linux-x64/bin/code
