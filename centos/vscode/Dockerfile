@@ -17,7 +17,7 @@ ENV VS_DIR=/home/${USER_NAME}
 ENV VS_CODE_VERSION=1.72.2
 ENV DEBUGGER_JAVA=0.46.2022112102
 ENV EXTENSION_JAVA=0.25.2022110400
-ENV OPENJDK_VERSION=11+28
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 
 # Fixed immediate close of window upon boot with: https://github.com/WhitewaterFoundry/Pengwin/issues/285
 ENV LIBGL_ALWAYS_INDIRECT=1
