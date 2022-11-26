@@ -46,11 +46,9 @@ RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstu
 
 RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
-RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/VSCode-linux-x64/
+RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/
 
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
-
-RUN ls -l ${VS_DIR}/VSCode-linux-x64
 
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
