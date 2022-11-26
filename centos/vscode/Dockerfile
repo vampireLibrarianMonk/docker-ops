@@ -14,8 +14,8 @@ ENV VS_DIR=/home/${USER_NAME}
 ENV VS_CODE_VERSION=1.72.2
 
 # Fixed immediate close of window upon boot with: https://github.com/WhitewaterFoundry/Pengwin/issues/285
-ENV LIBGL_ALWAYS_INDIRECT=1
-ENV NO_AT_BRIDGE=1
+#ENV LIBGL_ALWAYS_INDIRECT=1
+#ENV NO_AT_BRIDGE=1
 
 # Installing the sources for the locales
 RUN  yum install -y glibc-common wget
