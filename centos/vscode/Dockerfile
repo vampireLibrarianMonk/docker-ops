@@ -9,7 +9,7 @@ FROM  centos:centos7.9.2009
 
 # Create a user name
 ENV USER_NAME=vstester
-ENV VS_DIR=/home/vstester
+ENV VS_DIR=/home/${USER_NAME}
 
 ENV VS_CODE_VERSION=1.72.2
 
@@ -32,6 +32,8 @@ RUN  dbus-uuidgen > /etc/machine-id
 
 RUN useradd -m ${USER_NAME}
 
+RUN mkdir /home/${USER_NAME}
+
 RUN groupadd -r ${USER_NAME} -f -g 1001 && \
  useradd -u 1001 -r -g ${USER_NAME} -m -d ${VS_DIR} -s /sbin/nologin \
  -c "VS Tester" nexus && \
@@ -40,13 +42,13 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
 
 USER ${USER_NAME}
 
-RUN wget -q -O ${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable
+RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable
 
-RUN tar -xf ${VS_CODE_VERSION}.tar.gz
+RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
-RUN rm -f ${VS_CODE_VERSION}.tar.gz
+RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
-RUN chmod +x /VSCode-linux-x64/bin/code
+RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
 # Diagnostics 
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
