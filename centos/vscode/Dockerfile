@@ -7,6 +7,9 @@
 # We are going to use the Latest version of Centos
 FROM  centos:centos7.9.2009
 
+# Create a user name
+ENV USER_NAME=vstester
+
 ENV VS_CODE_VERSION=1.72.2
 
 # Fixed immediate close of window upon boot with: https://github.com/WhitewaterFoundry/Pengwin/issues/285
@@ -26,8 +29,15 @@ RUN  yum install -y dbus-x11 PackageKit-gtk3-module libcanberra-gtk2 firefox
 # Generating a universally unique ID for the Container
 RUN  dbus-uuidgen > /etc/machine-id
 
-# Starting Firefox application
-#CMD  /usr/bin/firefox
+RUN useradd -m ${USER_NAME}
+
+RUN groupadd -r ${USER_NAME} -f -g 1001 && \
+ useradd -u 1001 -r -g ${USER_NAME} -m -d ${VS_DIR} -s /sbin/nologin \
+ -c "VS Tester" nexus && \
+ chown -R ${USER_NAME}:${USER_NAME} ${VS_DIR} && \
+ chmod -R 755 ${VS_DIR}
+
+USER ${USER_NAME}
 
 RUN wget -q -O ${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable
 
@@ -35,12 +45,11 @@ RUN tar -xf ${VS_CODE_VERSION}.tar.gz
 
 RUN rm -f ${VS_CODE_VERSION}.tar.gz
 
-RUN mkdir -p /home/vstester
-
 RUN chmod +x /VSCode-linux-x64/bin/code
 
 # Diagnostics 
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 #ENTRYPOINT ["./VSCode-linux-x64/bin/code", "--no-sandbox", "--user-data-dir", "/home/vstester" ]
-CMD ./VSCode-linux-x64/bin/code --verbose --no-sandbox --user-data-dir /home/vstester
+#CMD ./VSCode-linux-x64/bin/code --verbose --no-sandbox --user-data-dir /home/vstester
+CMD ./VSCode-linux-x64/bin/code
