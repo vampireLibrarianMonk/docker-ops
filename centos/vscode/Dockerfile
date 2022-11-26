@@ -46,46 +46,46 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
 
 USER ${USER_NAME}
 
-RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 \
+RUN mkdir -p ${VS_DIR}/VSCode-linux-x64 
 #
 # Download VSCode
-&& wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable \
+&& wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable 
 #
 # Create plugins directory structure
-&& mkdir -p ${VS_DIR}/plugins \
+RUN mkdir -p ${VS_DIR}/plugins 
 #
 # Download set of plugins
-&& mkdir -p ${VS_DIR}/plugins/java \
+RUN mkdir -p ${VS_DIR}/plugins/java 
 #
 ## Java Debugger
-&& wget -q -O ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage \
+RUN wget -q -O ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
 #
 # Create extensions directory structure
-&& mkdir -p ${VS_DIR}/extensions \
+RUN mkdir -p ${VS_DIR}/extensions 
 #
 ## Extensions
 ## Java
-&& mkdir -p ${VS_DIR}/extensions/java \
-&& wget -q -O ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage \
+RUN mkdir -p ${VS_DIR}/extensions/java 
+RUN wget -q -O ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
 #
 # Software Development Kits
 ## Java
-&& mkdir -p ${VS_DIR}/sdk/java \
-&& wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz \
-&& wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256 https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz.sha256 \
+RUN mkdir -p ${VS_DIR}/sdk/java 
+RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz 
+RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256 https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz.sha256 
 #
 # SHA256 check
-&& echo "$(cat ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256) ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz" | sha256sum --check \
+RUN echo "$(cat ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256) ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz" | sha256sum --check 
 #
-&& chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz \
+RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
 #
-&& tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/ \
+RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/ 
 #
-&& ls -l ${VS_DIR}/VSCode-linux-x64 \
+RUN ls -l ${VS_DIR}/VSCode-linux-x64 
 #
-&& rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz \
+RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
 #
-&& chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
+RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
 # Diagnostics 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
