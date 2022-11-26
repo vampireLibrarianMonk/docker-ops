@@ -38,6 +38,10 @@ RUN  dbus-uuidgen > /etc/machine-id
 
 RUN useradd -m ${USER_NAME}
 
+# Create directory structure
+RUN mkdir -p ${VS_DIR}/plugins/java 
+RUN mkdir -p ${VS_DIR}/extensions/java 
+
 RUN groupadd -r ${USER_NAME} -f -g 1001 && \
  useradd -u 1001 -r -g ${USER_NAME} -m -d ${VS_DIR} -s /sbin/nologin \
  -c "VS Tester" nexus && \
@@ -52,20 +56,16 @@ RUN mkdir -p ${VS_DIR}/VSCode-linux-x64
 RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable 
 #
 # Create plugins directory structure
-RUN mkdir -p ${VS_DIR}/plugins 
 #
 # Download set of plugins
-RUN mkdir -p ${VS_DIR}/plugins/java 
 #
 ## Java Debugger
-RUN wget -q -O ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
+RUN wget -q -O ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
 #
 # Create extensions directory structure
-RUN mkdir -p ${VS_DIR}/extensions 
 #
 ## Extensions
 ## Java
-RUN mkdir -p ${VS_DIR}/extensions/java 
 RUN wget -q -O ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
 #
 # Software Development Kits
