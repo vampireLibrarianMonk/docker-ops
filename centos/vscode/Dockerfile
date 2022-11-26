@@ -75,15 +75,15 @@ USER ${USER_NAME}
 # Download set of plugins
 #
 ## Java Debugger                                                                      
-RUN wget -q -O vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
+RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/${DEBUGGER_JAVA}/vspackage 
 #
 ## Extensions
 ## Java
-RUN wget -q -O vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
+RUN wget -q -O ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-pack/${EXTENSION_JAVA}/vspackage 
 #
 # Install extension
-RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
-RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
+RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
+RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
 
 # Diagnostics 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
