@@ -14,8 +14,8 @@ ENV VS_DIR=/home/${USER_NAME}
 ENV VS_CODE_VERSION=1.72.2
 
 # Fixed immediate close of window upon boot with: https://github.com/WhitewaterFoundry/Pengwin/issues/285
-#ENV LIBGL_ALWAYS_INDIRECT=1
-#ENV NO_AT_BRIDGE=1
+ENV LIBGL_ALWAYS_INDIRECT=1
+ENV NO_AT_BRIDGE=1
 
 # Installing the sources for the locales
 RUN  yum install -y glibc-common wget
@@ -55,8 +55,8 @@ RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
 # Diagnostics 
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 #ENTRYPOINT [ "./${VS_DIR}/VSCode-linux-x64/bin/code" ]
 #CMD ./VSCode-linux-x64/bin/code --verbose --no-sandbox --user-data-dir /home/vstester
-CMD ${VS_DIR}/VSCode-linux-x64/bin/code
+#CMD ${VS_DIR}/VSCode-linux-x64/bin/code
