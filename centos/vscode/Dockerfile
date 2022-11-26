@@ -40,11 +40,13 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
 
 USER ${USER_NAME}
 
+RUN mkdir -p ${VS_DIR}/VSCode-linux-x64
+
 RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable
 
 RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
-RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
+RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/VSCode-linux-x64
 
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
