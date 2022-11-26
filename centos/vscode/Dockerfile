@@ -32,8 +32,6 @@ RUN  dbus-uuidgen > /etc/machine-id
 
 RUN useradd -m ${USER_NAME}
 
-RUN mkdir /home/${USER_NAME}
-
 RUN groupadd -r ${USER_NAME} -f -g 1001 && \
  useradd -u 1001 -r -g ${USER_NAME} -m -d ${VS_DIR} -s /sbin/nologin \
  -c "VS Tester" nexus && \
