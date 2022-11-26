@@ -48,6 +48,8 @@ RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
 RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/
 
+RUN ls -l ${VS_DIR}/VSCode-linux-x64
+
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
