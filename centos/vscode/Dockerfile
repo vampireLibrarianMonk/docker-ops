@@ -77,10 +77,6 @@ RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz
 #
 RUN chmod +x ${VS_DIR}/VSCode-linux-x64/bin/code
 
-# Install extension
-RUN ${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
-RUN ${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
-
 RUN useradd -m ${USER_NAME}
 
 RUN groupadd -r ${USER_NAME} -f -g 1001 && \
@@ -90,6 +86,10 @@ RUN groupadd -r ${USER_NAME} -f -g 1001 && \
  chmod -R 755 ${VS_DIR}
 
 USER ${USER_NAME}
+
+# Install extension
+RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/extensions/java/vscjava.vscode-java-pack-${EXTENSION_JAVA}.vsix
+RUN ./${VS_DIR}/VSCode-linux-x64/bin/code --install-extension ${VS_DIR}/plugins/java/vscjava.vscode-java-debug-${DEBUGGER_JAVA}.vsix
 
 # Diagnostics 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
