@@ -33,6 +33,9 @@ RUN  localedef --no-archive -i en_US -f UTF-8 en_US.UTF-8 && \
 # Installing Necessary packages including firefox
 RUN  yum install -y dbus-x11 PackageKit-gtk3-module libcanberra-gtk2 firefox
 
+# Install SDK
+RUN yum install -y java-11-openjdk-devel
+
 # Generating a universally unique ID for the Container
 RUN  dbus-uuidgen > /etc/machine-id
 
@@ -42,20 +45,9 @@ RUN mkdir -p ${VS_DIR}/VSCode-linux-x64
 # Download VSCode
 RUN wget -q -O ${VS_DIR}/${VS_CODE_VERSION}.tar.gz https://update.code.visualstudio.com/${VS_CODE_VERSION}/linux-x64/stable 
 
-# Software Development Kits
-## Java
-RUN mkdir -p ${VS_DIR}/sdk/java 
-RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz 
-RUN wget -q -O ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256 https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz.sha256 
-
-# SHA256 check
-RUN echo "$(cat ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz.sha256) ${VS_DIR}/sdk/java/${OPENJDK_VERSION}.tar.gz" | sha256sum --check 
-
 RUN chmod +x+r ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
 
 RUN tar -xf ${VS_DIR}/${VS_CODE_VERSION}.tar.gz  --directory ${VS_DIR}/ 
-
-RUN ls -l ${VS_DIR}/VSCode-linux-x64 
 
 RUN rm -f ${VS_DIR}/${VS_CODE_VERSION}.tar.gz 
 
